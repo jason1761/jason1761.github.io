@@ -2,70 +2,89 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>2019 CEBU</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="data.js"></script>
 
 <body>
-  <div class="container">
-    <h1>2019 Cebu Travling</h1>
-    <hr />
-
-    <div id="v1">
-      <h2>航班資訊</h2>
-      <table class="table table-bordered" style="width: 100%">
-        <thead>
-          <tr>
-            <th>日期</th>
-            <th>出發地</th>
-            <th>抵達地</th>
-            <th>出發時間</th>
-            <th>抵達時間</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="air in airs">
-            <td>{{air.date}}</td>
-            <td>{{air.location}}</td>
-            <td>{{air.arrived}}</td>
-            <td>{{air.locattime}}</td>
-            <td>{{air.arrtime}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <hr />
-
-    <div id="v2">
-      <h2>行前注意事項</h2>
-      <ul>
-        <li v-for="notice in notices">{{notice}}</li>
-      </ul>
-
-    </div>
-
+  <div id="app">
+    <v-app id="inspire">
+      <toolbar></toolbar>
+      <airplane-card></airplane-card>
+    </v-app>
   </div>
-
-
 </body>
-<script src="data.js"></script>
-<script>
-  var v1 = new Vue({
-    el: "#v1",
-    data: {
-      checkAll: false,// 是否全選
-      checkedRows: [],// 選中的行標，用於刪除行
-      airs: airdata,// 表格資料
-      newRow: {}// 新增的行資料，用於新增行
-    }
-  })
-
-  var v2 = new Vue({
-    el: '#v2',
-    data:{
-      notices : noticesdata
-    }
-  })
-</script>
-
+<template id="toolbar">
+    <v-toolbar dark color="primary">
+      <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
+      <v-toolbar-title>2019 CEBU 一行人</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <!-- <v-btn flat>Link One</v-btn>
+                <v-btn flat>Link Two</v-btn>
+                <v-btn flat>Link Three</v-btn> -->
+      </v-toolbar-items>
+    </v-toolbar>
+  </template>
+  
+  <template id="airplain-card">
+    <v-layout>
+      <v-flex xs12 sm8 offset-sm2>
+        <v-card>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">航班資訊</h3>
+            </div>
+          </v-card-title>
+          <template>
+            <v-data-table :headers="headers" :items="desserts" class="elevation-1" hide-actions>
+              <template v-slot:items="props">
+                <td>{{ props.item.date }}</td>
+                <td>{{ props.item.location }}</td>
+                <td>{{ props.item.arrived }}</td>
+                <td>{{ props.item.locattime }}</td>
+                <td>{{ props.item.arrtime }}</td>
+              </template>
+            </v-data-table>
+          </template>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </template>
+  <script>
+      Vue.component('toolbar', {
+          template: '#toolbar'
+      })
+      
+      var _airplainCard = {
+          template: '#airplain-card',
+          data() {
+              return {
+                  headers: air_header,
+                  desserts: airdata
+              }
+          }
+      }
+      
+      new Vue({
+          el: '#app',
+          components: {
+              'airplane-card': _airplainCard,
+          }
+      })
+      </script>
 </html>
+
+
+
+
+
+
+
+

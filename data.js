@@ -1,3 +1,21 @@
+var air_header = [
+    {
+        text: '日期',
+        sortable: false,
+    }, {
+        text: '出發地點',
+        sortable: false,
+    },{
+        text:'抵達地點',
+        sortable: false,
+    },{
+        text:'出發時間',
+        sortable: false,
+    },{
+        text:'抵達時間',
+        sortable: false,
+    },
+]
 var airdata = [{
     date: "3/28",
     location: "台北桃園國際機場第二航廈",
@@ -6,7 +24,7 @@ var airdata = [{
     arrtime: "10:05"
 
 }, {
-    date: "4/1", 
+    date: "4/1",
     location: "宿霧麥克坦國際機場",
     arrived: "台北桃園國際機場第二航廈",
     locattime: "11:05",
