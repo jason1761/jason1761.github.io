@@ -11,80 +11,118 @@
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
   <script src="data.js"></script>
+</head>
 
 <body>
   <div id="app">
     <v-app id="inspire">
-      <toolbar></toolbar>
-      <airplane-card></airplane-card>
+      <template id="toolbar">
+        <v-toolbar dark color="primary">
+          <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
+          <v-toolbar-title>2019 CEBU 一行人</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items class="hidden-sm-and-down">
+            <!-- <v-btn flat>Link One</v-btn>
+                                  <v-btn flat>Link Two</v-btn>
+                                  <v-btn flat>Link Three</v-btn> -->
+          </v-toolbar-items>
+        </v-toolbar>
+      </template>
+
+      <v-content>
+        <v-container fluid>
+          <airplane-card></airplane-card>
+          <br>
+          <notice-card></notice-card>
+        </v-container>
+      </v-content>
+
     </v-app>
   </div>
 </body>
-<template id="toolbar">
-    <v-toolbar dark color="primary">
-      <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
-      <v-toolbar-title>2019 CEBU 一行人</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down">
-        <!-- <v-btn flat>Link One</v-btn>
-                <v-btn flat>Link Two</v-btn>
-                <v-btn flat>Link Three</v-btn> -->
-      </v-toolbar-items>
-    </v-toolbar>
-  </template>
-  
-  <template id="airplain-card">
-    <v-layout>
-      <v-flex xs12 sm8 offset-sm2>
-        <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">航班資訊</h3>
-            </div>
-          </v-card-title>
-          <template>
-            <v-data-table :headers="headers" :items="desserts" class="elevation-1" hide-actions>
-              <template v-slot:items="props">
-                <td>{{ props.item.date }}</td>
-                <td>{{ props.item.location }}</td>
-                <td>{{ props.item.arrived }}</td>
-                <td>{{ props.item.locattime }}</td>
-                <td>{{ props.item.arrtime }}</td>
-              </template>
-            </v-data-table>
-          </template>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </template>
-  <script>
-      Vue.component('toolbar', {
-          template: '#toolbar'
-      })
-      
-      var _airplainCard = {
-          template: '#airplain-card',
-          data() {
-              return {
-                  headers: air_header,
-                  desserts: airdata
-              }
-          }
+
+
+<template id="airplain-card">
+  <v-layout row wrap>
+    <v-flex xs12 sm8 offset-sm2>
+      <v-card>
+        <v-card-title primary-title>
+          <div>
+            <h3 class="headline mb-0">航班資訊</h3>
+          </div>
+        </v-card-title>
+        <template>
+          <v-data-table :headers="headers" :items="desserts" class="elevation-1" hide-actions>
+            <template v-slot:items="props">
+              <td>{{ props.item.date }}</td>
+              <td>{{ props.item.location }}</td>
+              <td>{{ props.item.arrived }}</td>
+              <td>{{ props.item.locattime }}</td>
+              <td>{{ props.item.arrtime }}</td>
+            </template>
+          </v-data-table>
+        </template>
+      </v-card>
+    </v-flex>
+  </v-layout>
+</template>
+
+<template id="notice-card">
+  <v-layout row>
+    <v-flex xs12 sm8 offset-sm2 mb1>
+      <v-card>
+        <v-card-title primary-title>
+          <div>
+            <h3 class="headline mb-0">注意事項</h3>
+          </div>
+        </v-card-title>
+
+        <v-list subheader>
+          <v-list-tile v-for="item in items" :key="item" avatar @click="">
+            <v-list-tile-content>
+              <v-list-tile-title v-html="item"></v-list-tile-title>
+            </v-list-tile-content>
+           
+          </v-list-tile>
+        </v-list>
+
+      </v-card>
+    </v-flex>
+  </v-layout>
+</template>
+
+
+<script>
+  Vue.component('toolbar', {
+    template: '#toolbar'
+  })
+
+  var _airplainCard = {
+    template: '#airplain-card',
+    data() {
+      return {
+        headers: air_header,
+        desserts: airdata
       }
-      
-      new Vue({
-          el: '#app',
-          components: {
-              'airplane-card': _airplainCard,
-          }
-      })
-      </script>
+    }
+  }
+
+  var _noticeItem = {
+    template: '#notice-card',
+    data() {
+      return {
+        items: noticesdata
+      }
+    }
+  }
+
+  new Vue({
+    el: '#app',
+    components: {
+      'airplane-card': _airplainCard,
+      'notice-card': _noticeItem
+    }
+  })
+</script>
+
 </html>
-
-
-
-
-
-
-
-
