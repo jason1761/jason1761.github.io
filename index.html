@@ -159,14 +159,14 @@
             ,{ "alt":62,"x":  1133,"y":1217}
         ];
 
-    // $('.all-image').click(function (e) {
-    //     console.log(e);
-    //     var elm = $(this);
-    //     var xPos = e.pageX - elm.offset().left;
-    //     var yPos = e.pageY - elm.offset().top;
-    //     // console.log(xPos, yPos);
-    //     show(xPos, yPos);
-    // });
+    $('.all-image').click(function (e) {
+        console.log(e);
+        var elm = $(this);
+        var xPos = e.pageX - elm.offset().left;
+        var yPos = e.pageY - elm.offset().top;
+        // console.log(xPos, yPos);
+        show(xPos, yPos);
+    });
 
     function show(xPos, yPos) {
         $.each(json, function () {
