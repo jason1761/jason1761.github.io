@@ -158,12 +158,13 @@
                 // console.log(obj.x);
                 if (rY <= 15 && rY >= -15) {
                     console.log("xPos:", xPos, " obj.x:", obj.x, "rX=", rX, "yPos:", yPos , " obj.x:", obj.y + "rY=", rY)
-                    var $newdiv1 = $("<div class='badge'>" + obj.alt + "</div>");
+                    var $newdiv1 = $("<div class='badge' id='badge-"+obj.alt+"'>" + obj.alt + "</div>");
                     $($newdiv1).css({
                         "top": obj.y,
                         "left": obj.x - 5,
                         "position": "absolute"
                     });
+                    $('#badge-'+obj.alt+'').remove();
                     $('.all-image').append($newdiv1);
                 }
 
