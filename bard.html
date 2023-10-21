@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>點擊圖片顯示內容</title>
+  <style>
+    /* 圖片 */
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    /* 內容 */
+    .content {
+      position: absolute;
+      z-index: 1;
+      display: none;
+    }
+    @media (max-width: 768px) {
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      .content {
+        width: 100%;
+        height: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+<img src="source.jpg" id="image">
+<div class="content">test</div>
+<script>
+
+  const client = new XMLHttpRequest();
+  let content = [];
+  client.open('GET', 'content.json', false);
+  client.onreadystatechange = function() {
+    // console.log(client.responseText);
+    content = JSON.parse(client.responseText);
+  }
+  client.send();
+  console.log("content:", content);
+
+  // 獲取圖片的寬度和高度
+  const imageWidth = document.getElementById("image").width;
+  const imageHeight = document.getElementById("image").height;
+
+  for(let i : content){
+
+  }
+
+  // 獲取點擊事件
+  const clickHandler = (event) => {
+    // 計算點擊位置
+    const x = event.clientX - imageWidth / 2;
+    const y = event.clientY - imageHeight / 2;
+
+    const imgSizeWidth = 1279;
+    const imgSizeHight = 1281;
+
+
+
+
+
+    // 顯示內容
+    const content = document.querySelector(".content");
+    content.style.left = x + "px";
+    content.style.top = y + "px";
+    content.style.display = "block";
+    content.style.borderWidth = 2;
+
+
+  };
+
+  // 添加點擊事件
+  document.getElementById("image").addEventListener("click", clickHandler);
+</script>
+</body>
+</html>
