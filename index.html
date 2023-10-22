@@ -1,144 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-tw">
 <head>
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1">
-    <script src="ios-orientationchange-fix.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圖片與 tooltips</title>
+
     <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
         body {
-            font-family: Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
-        h1 {
-            font-size: 20px;
-        }
-
-        img[usemap] {
-            border: none;
+        img {
+            width: 100%;
             height: auto;
-            max-width: 100%;
-            width: auto;
+            object-fit: contain;
         }
 
-        div.all-image::before {
-            content: url('source.jpg');
-            top: 0;
-            left: 0;
-        }
-
-        div.all-image {
-            top: 0;
-            left: 0;
-            height: 1281px;
-            weight: 100%;
-        }
-
-        .badge {
-            /*background: radial-gradient( 5px -9px, circle, white 8%, red 26px );*/
+        .tooltip {
+            position: absolute;
+            z-index: 999;
             background-color: black;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            /*border: 2px solid white;*/
-            /*border-radius: 12px; !* one half of ( (border * 2) + height + padding ) *!*/
-            box-shadow: 1px 1px 1px black;
             color: white;
-            font: bold 15px/13px Helvetica, Verdana, Tahoma;
-            height: 16px;
-            min-width: 14px;
-            padding: 4px 3px 0 3px;
-            text-align: center;
-
+            padding: 5px;
+            border-radius: 7px;
+            opacity: 1;
+            transition: opacity 0.2s;
         }
 
-        .hint {
+        .tips {
+            position: absolute;
+            z-index: 999;
+            background-color: #0000007a;
+            color: white;
+            padding: 0.4vw;
+            border-radius: 50%;
+            transition: opacity 0.5s;
+        }
 
+        .tooltip:hover {
+            opacity: 1;
+        }
+
+        table{
+            width:100%;
+        }
+
+        table td{
+            width: 33%;
+            vertical-align:text-top;
+        }
+
+        .tr-case{
+            background-color: #80ff67;
         }
 
     </style>
 </head>
 <body>
-<div class="all-image"></div>
-<!--<div id="tag" class="badge">12</div>-->
+<img src="source.jpg" alt="圖片">
 
-<script src="jquery.min.js"></script>
+
+<table>
+    <tr class="tr-case">
+        <td >世界聖哲偉人</td>
+        <td>神話/傳說</td>
+        <td>當下世界</td>
+    </tr>
+    <tr>
+        <td>11 釋迦牟尼佛
+            <br/>8 先知的命運－勞孔
+            <br/>13 原始佛教阿羅漢
+            <br/>22 征服者－亞力山大
+            <br/>25 玄奘大師
+            <br/>26 蘇格拉底
+            <br/>27 達摩祖師
+            <br/>28 貝多芬
+            <br/>30 愛因斯坦
+            <br/>33 牛頓
+            <br/>34 朱熹
+            <br/>35 六祖慧能
+            <br/>36 甘地
+            <br/>37 蒙娜麗莎
+            <br/>38 孔子
+            <br/>42 老子
+            <br/>43 黑格爾
+            <br/>44 托爾斯泰
+            <br/>45 莫漢摩德
+            <br/>46 蓮花生大師
+            <br/>51 馬克思
+            <br/>52 大衛
+            <br/>53 林布蘭
+            <br/>54 莊子
+            <br/>58莫扎特
+            <br/>59梵谷
+        </td>
+        <td>
+            3 敦煌石窟飛天
+            <br/>5 外星仙人
+            <br/>6 創世紀/亞當的創造
+            <br/>9 慾界天人
+            <br/>12 道教神仙－八仙過海
+            <br/>15 啟示錄
+            <br/>19 大天使長
+            <br/>23 大天使長
+            <br/>24 撒旦的叛變
+            <br/>29 失樂園
+            <br/>31 聖殤圖/聖母與耶穌
+            <br/>32 天使的墮落
+            <br/>40 死神
+            <br/>41 諾亞方舟
+            <br/>48 濕婆神
+            <br/>49 畜生道
+            <br/>56 征服與掠奪
+            <br/>57 維納斯
+            <br/>61地獄眾生
+        </td>
+        <td>
+            １史前生物恐龍
+           <br/>2 人類進化史
+           <br/>4 航天器
+           <br/>7 宇航員
+           <br/>10 海底生物
+           <br/>14 當代生存空間
+           <br/>16 初生兒
+           <br/>17 遺傳基因密碼雙螺旋
+           <br/>18 愛情
+           <br/>20 科技經濟政治當代三合一世界
+           <br/>21 供養菩薩
+           <br/>39 生命的維度
+           <br/>47 人間生活
+           <br/>50 生化實驗
+           <br/>55 龍芯片
+           <br/>60 孤寂封閉的自我
+           <br/>62 躺平族
+        </td>
+    </tr>
+
+</table>
+<script src="content.js"></script>
 <script>
+    const image = document.querySelector("img");
+    console.log(toPercent(image.width, 1281), toPercent(image.height, 1281));
 
-    var json = [];
-    $(document).ready(function () {
-        $.ajaxSetup({
-            async: false
-        });
-
-        $.getJSON('content.json', function (rs) {
-            json = rs;
-        });
-        console.log(json);
-        $.each(json, function () {
-            var obj = this;
-            var elm = $('all-image');
-            var $newdiv1 = $("<div class='badge' id='badge-" + obj.alt + "'>" + obj.alt + "</div>");
-            $($newdiv1).css({
-                "top": obj.y,
-                "left": obj.x - 5,
-                "position": "absolute"
-            });
-            $('.all-image').append($newdiv1);
-        });
+    contents.forEach(function (obj, i) {
+        const tips = document.createElement("div");
+        tips.className = "tips";
+        tips.textContent = obj.alt;
+        // document.body.appendChild(tips);
+        // console.log(obj.y * toPercent(image.height, 1281), obj.x * toPercent(image.width, 1281))
+        tips.style.top = obj.y * toPercent(image.height, 1279) + 'px';
+        tips.style.left = obj.x * toPercent(image.width, 1281) + 'px';
     });
-    function mousemove(event) {
-        console.log("pageX: ", event.pageX,
-            "pageY: ", event.pageY,
-            "clientX: ", event.clientX,
-            "clientY:", event.clientY)
 
-        var elm = $('.all-image');
-        var xPos = event.pageX - elm.offset().left;
-        var yPos = event.pageY - elm.offset().top;
+    function setTooltipsPosition(e) {
+        const imagePosition = image.getBoundingClientRect();
+        const imageScaleX = toPercent(image.width, 1281);
+        const imageScaleY =  toPercent(image.height, 1279);
 
-        // console.log("xPos: ", xPos, "yPos: ", yPos);
-        show(xPos, yPos);
+        const scale = 45 *  toPercent(image.width, 1281);
+
+        const tool = document.querySelector(".tooltip");
+        if(null != tool){
+            tool.remove();
+        }
+        contents.forEach(function (obj, i) {
+            const tooltips = document.createElement("div");
+            tooltips.className = "tooltip";
+            tooltips.textContent = obj.alt + obj.msg;
+            const left = obj.x * imageScaleX;
+            const top = obj.y * imageScaleY;
+            const rX = e.pageX - imagePosition.left - left;
+            const rY = e.pageY - imagePosition.top - top;
+            if ((rX <= scale && rX >= -scale) && (rY <= scale && rY >= -scale)) {
+                console.log("left",left, "top",top, "rX", rX, "rY", rY);
+                document.body.appendChild(tooltips);
+                tooltips.style.top = top + 'px';
+                tooltips.style.left = left + 'px';
+            }
+        });
     }
 
-    window.addEventListener('mousemove', mousemove);
+    // tooltips.className = "tooltip";
+    // tooltips.textContent = "這是圖片";
+    // // document.body.appendChild(tooltips);
+    // tooltips.style.top = e.clientY - tooltips.clientHeight / 2 - imagePosition.top + 'px';
+    // tooltips.style.left = e.clientX - tooltips.clientWidth / 2 - imagePosition.left + 'px';
 
 
+    image.addEventListener("click", setTooltipsPosition);
+    // image.addEventListener("mousemove", setTooltipsPosition);
 
-
-
-    $('.all-image').click(function (e) {
-        console.log(e);
-        var elm = $(this);
-        var xPos = e.pageX - elm.offset().left;
-        var yPos = e.pageY - elm.offset().top;
-        // console.log(xPos, yPos);
-        show(xPos, yPos);
+    window.addEventListener("resize", function () {
+        // 當螢幕大小改變時，重新計算 tooltips 的位置
+        setTooltipsPosition();
     });
 
-    function show(xPos, yPos) {
-        $.each(json, function () {
-            var obj = this;
-            var rX = xPos - obj.x;
-            var rY = yPos - obj.y;
-            if (rX <= 15 && rX >= -15) {
-                // console.log(obj.x);
-                if (rY <= 15 && rY >= -15) {
-                    console.log("xPos:", xPos, " obj.x:", obj.x, "rX=", rX, "yPos:", yPos, " obj.x:", obj.y + "rY=", rY)
-                    var $newdiv1 = $("<div class='badge' id='badge-" + obj.alt + "'>" + obj.alt + "</div>");
-                    $($newdiv1).css({
-                        "top": obj.y,
-                        "left": obj.x - 5,
-                        "position": "absolute"
-                    });
-                    $('.badge').remove();
-                    $('#badge-' + obj.alt + '').remove();
-                    $('.all-image').append($newdiv1);
-                }
-
-            }
-
-        });
+    function toPercent(num, total) {
+        // return (Math.round(num / total * 100) / 100) -100 ;// 小数点后两位百分比
+        return num / total;
     }
 </script>
 </body>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1">
+    <script src="ios-orientationchange-fix.min.js"></script>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 20px;
+        }
+
+        img[usemap] {
+            border: none;
+            height: auto;
+            max-width: 100%;
+            width: auto;
+        }
+
+        div.all-image::before {
+            content: url('source.jpg');
+            top: 0;
+            left: 0;
+        }
+
+        div.all-image {
+            top: 0;
+            left: 0;
+            height: 1281px;
+            weight: 100%;
+        }
+
+        .badge {
+            /*background: radial-gradient( 5px -9px, circle, white 8%, red 26px );*/
+            background-color: black;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            /*border: 2px solid white;*/
+            /*border-radius: 12px; !* one half of ( (border * 2) + height + padding ) *!*/
+            box-shadow: 1px 1px 1px black;
+            color: white;
+            font: bold 15px/13px Helvetica, Verdana, Tahoma;
+            height: 16px;
+            min-width: 14px;
+            padding: 4px 3px 0 3px;
+            text-align: center;
+
+        }
+
+        .hint {
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="all-image"></div>
+<!--<div id="tag" class="badge">12</div>-->
+
+<script src="jquery.min.js"></script>
+<script>
+
+    var json = [];
+    $(document).ready(function () {
+        $.ajaxSetup({
+            async: false
+        });
+
+        $.getJSON('content.json', function (rs) {
+            json = rs;
+        });
+        console.log(json);
+        $.each(json, function () {
+            var obj = this;
+            var elm = $('all-image');
+            var $newdiv1 = $("<div class='badge' id='badge-" + obj.alt + "'>" + obj.alt + "</div>");
+            $($newdiv1).css({
+                "top": obj.y,
+                "left": obj.x - 5,
+                "position": "absolute"
+            });
+            $('.all-image').append($newdiv1);
+        });
+    });
+    function mousemove(event) {
+        console.log("pageX: ", event.pageX,
+            "pageY: ", event.pageY,
+            "clientX: ", event.clientX,
+            "clientY:", event.clientY)
+
+        var elm = $('.all-image');
+        var xPos = event.pageX - elm.offset().left;
+        var yPos = event.pageY - elm.offset().top;
+
+        // console.log("xPos: ", xPos, "yPos: ", yPos);
+        show(xPos, yPos);
+    }
+
+    window.addEventListener('mousemove', mousemove);
+
+
+
+
+
+    $('.all-image').click(function (e) {
+        console.log(e);
+        var elm = $(this);
+        var xPos = e.pageX - elm.offset().left;
+        var yPos = e.pageY - elm.offset().top;
+        // console.log(xPos, yPos);
+        show(xPos, yPos);
+    });
+
+    function show(xPos, yPos) {
+        $.each(json, function () {
+            var obj = this;
+            var rX = xPos - obj.x;
+            var rY = yPos - obj.y;
+            if (rX <= 15 && rX >= -15) {
+                // console.log(obj.x);
+                if (rY <= 15 && rY >= -15) {
+                    console.log("xPos:", xPos, " obj.x:", obj.x, "rX=", rX, "yPos:", yPos, " obj.x:", obj.y + "rY=", rY)
+                    var $newdiv1 = $("<div class='badge' id='badge-" + obj.alt + "'>" + obj.alt + "</div>");
+                    $($newdiv1).css({
+                        "top": obj.y,
+                        "left": obj.x - 5,
+                        "position": "absolute"
+                    });
+                    $('.badge').remove();
+                    $('#badge-' + obj.alt + '').remove();
+                    $('.all-image').append($newdiv1);
+                }
+
+            }
+
+        });
+    }
+</script>
+</body>
+</html>
