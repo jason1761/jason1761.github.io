@@ -1,82 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-tw">
 <head>
-  <meta charset="UTF-8">
-  <title>點擊圖片顯示內容</title>
-  <style>
-    /* 圖片 */
-    img {
-      width: 100%;
-      height: auto;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圖片與 tooltips</title>
 
-    /* 內容 */
-    .content {
-      position: absolute;
-      z-index: 1;
-      display: none;
-    }
-    @media (max-width: 768px) {
-      img {
-        width: 100%;
-        height: auto;
-      }
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
 
-      .content {
-        width: 100%;
-        height: 100px;
-      }
-    }
-  </style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .tooltip {
+            position: absolute;
+            z-index: 999;
+            background-color: black;
+            color: white;
+            padding: 5px;
+            border-radius: 7px;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+
+        .tooltip2 {
+            position: absolute;
+            z-index: 999;
+            background-color: black;
+            color: white;
+            padding: 5px;
+            border-radius: 7px;
+            transition: opacity 0.5s;
+        }
+
+        .tooltip:hover {
+            opacity: 1;
+        }
+
+        .tooltip:checked {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
-<img src="source.jpg" id="image">
-<div class="content">test</div>
+<img src="source.jpg" alt="圖片">
+<script src="content.js"></script>
 <script>
+    const image = document.querySelector("img");
+    console.log(toPercent(image.width, 1281), toPercent(image.height, 1281));
 
-  const client = new XMLHttpRequest();
-  let content = [];
-  client.open('GET', 'content.json', false);
-  client.onreadystatechange = function() {
-    // console.log(client.responseText);
-    content = JSON.parse(client.responseText);
-  }
-  client.send();
-  console.log("content:", content);
+    // contents.forEach(function (obj, i) {
+    //     const tooltips = document.createElement("div");
+    //     tooltips.className = "tooltip2";
+    //     tooltips.textContent = obj.alt;
+    //     document.body.appendChild(tooltips);
+    //     console.log(obj.y * toPercent(image.height, 1281), obj.x * toPercent(image.width, 1281))
+    //     tooltips.style.top = obj.y * toPercent(image.height, 1279) + 'px';
+    //     tooltips.style.left = obj.x * toPercent(image.width, 1281) + 'px';
+    //
+    // });
 
-  // 獲取圖片的寬度和高度
-  const imageWidth = document.getElementById("image").width;
-  const imageHeight = document.getElementById("image").height;
+    function setTooltipsPosition(e) {
+        const imagePosition = image.getBoundingClientRect();
+        const imageScaleX = toPercent(image.height, 1279);
+        const imageScaleY = toPercent(image.width, 1281);
 
-  for(let i : content){
+        contents.forEach(function (obj, i) {
+            const tooltips = document.createElement("div");
+            const left = obj.x * imageScaleX;
+            const top = obj.y * imageScaleY;
+            const rX = e.pageX - imagePosition.left - left;
+            const rY = e.pageY - imagePosition.top - top;
+            if ((rX <= 50 && rX >= -50) && (rY <= 50 && rY >= -50)) {
+                console.log("left",left, "top",top, "rX", rX, "rY", rY);
+                tooltips.className = "tooltip";
+                tooltips.textContent = obj.alt + obj.msg;
+                document.body.appendChild(tooltips);
+                tooltips.style.top = top + 'px';
+                tooltips.style.left = left + 'px';
+            }
+        });
+    }
 
-  }
-
-  // 獲取點擊事件
-  const clickHandler = (event) => {
-    // 計算點擊位置
-    const x = event.clientX - imageWidth / 2;
-    const y = event.clientY - imageHeight / 2;
-
-    const imgSizeWidth = 1279;
-    const imgSizeHight = 1281;
+    // tooltips.className = "tooltip";
+    // tooltips.textContent = "這是圖片";
+    // // document.body.appendChild(tooltips);
+    // tooltips.style.top = e.clientY - tooltips.clientHeight / 2 - imagePosition.top + 'px';
+    // tooltips.style.left = e.clientX - tooltips.clientWidth / 2 - imagePosition.left + 'px';
 
 
+    image.addEventListener("click", setTooltipsPosition);
+    image.addEventListener("mousemove", setTooltipsPosition);
 
+    window.addEventListener("resize", function () {
+        // 當螢幕大小改變時，重新計算 tooltips 的位置
+        setTooltipsPosition();
+    });
 
-
-    // 顯示內容
-    const content = document.querySelector(".content");
-    content.style.left = x + "px";
-    content.style.top = y + "px";
-    content.style.display = "block";
-    content.style.borderWidth = 2;
-
-
-  };
-
-  // 添加點擊事件
-  document.getElementById("image").addEventListener("click", clickHandler);
+    function toPercent(num, total) {
+        // return (Math.round(num / total * 100) / 100) -100 ;// 小数点后两位百分比
+        return num / total;
+    }
 </script>
 </body>
 </html>

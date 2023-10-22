@@ -5,12 +5,63 @@
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1">
     <script src="ios-orientationchange-fix.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 20px;
+        }
+
+        img[usemap] {
+            border: none;
+            height: auto;
+            max-width: 100%;
+            width: auto;
+        }
+
+        div.all-image::before {
+            content: url('source.jpg');
+            top: 0;
+            left: 0;
+        }
+
+        div.all-image {
+            top: 0;
+            left: 0;
+            height: 1281px;
+            weight: 100%;
+        }
+
+        .badge {
+            /*background: radial-gradient( 5px -9px, circle, white 8%, red 26px );*/
+            background-color: black;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            /*border: 2px solid white;*/
+            /*border-radius: 12px; !* one half of ( (border * 2) + height + padding ) *!*/
+            box-shadow: 1px 1px 1px black;
+            color: white;
+            font: bold 15px/13px Helvetica, Verdana, Tahoma;
+            height: 16px;
+            min-width: 14px;
+            padding: 4px 3px 0 3px;
+            text-align: center;
+
+        }
+
+        .hint {
+
+        }
+
+    </style>
 </head>
 <body>
-<div class="main">
-    <img src="source.jpg"/>
-</div>
+<div class="all-image"></div>
+<!--<div id="tag" class="badge">12</div>-->
+
 <script src="jquery.min.js"></script>
 <script>
 
@@ -26,25 +77,23 @@
         console.log(json);
         $.each(json, function () {
             var obj = this;
-            var elm = $('.main');
+            var elm = $('all-image');
             var $newdiv1 = $("<div class='badge' id='badge-" + obj.alt + "'>" + obj.alt + "</div>");
-            console.log(elm.offset());
             $($newdiv1).css({
                 "top": obj.y,
                 "left": obj.x - 5,
                 "position": "absolute"
             });
-            $('.main').append($newdiv1);
+            $('.all-image').append($newdiv1);
         });
     });
-
     function mousemove(event) {
-        // console.log("pageX: ", event.pageX,
-        //     "pageY: ", event.pageY,
-        //     "clientX: ", event.clientX,
-        //     "clientY:", event.clientY)
+        console.log("pageX: ", event.pageX,
+            "pageY: ", event.pageY,
+            "clientX: ", event.clientX,
+            "clientY:", event.clientY)
 
-        var elm = $('.main');
+        var elm = $('.all-image');
         var xPos = event.pageX - elm.offset().left;
         var yPos = event.pageY - elm.offset().top;
 
@@ -55,7 +104,10 @@
     window.addEventListener('mousemove', mousemove);
 
 
-    $('.main').click(function (e) {
+
+
+
+    $('.all-image').click(function (e) {
         console.log(e);
         var elm = $(this);
         var xPos = e.pageX - elm.offset().left;
@@ -81,7 +133,7 @@
                     });
                     $('.badge').remove();
                     $('#badge-' + obj.alt + '').remove();
-                    // $('.main').append($newdiv1);
+                    $('.all-image').append($newdiv1);
                 }
 
             }
