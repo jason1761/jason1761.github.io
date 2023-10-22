@@ -36,7 +36,7 @@
 
         .tips {
             position: absolute;
-            z-index: 999;
+            z-index: 2;
             background-color: #0000007a;
             color: white;
             padding: 0.4vw;
@@ -44,9 +44,6 @@
             transition: opacity 0.5s;
         }
 
-        .tooltip:hover {
-            opacity: 1;
-        }
 
         table{
             width:100%;
@@ -147,28 +144,31 @@
 <script src="content.js"></script>
 <script>
     const image = document.querySelector("img");
+    const imageScaleX = toPercent(image.width, 1279);
+    const imageScaleY =  toPercent(image.height, 1281);
     console.log(toPercent(image.width, 1281), toPercent(image.height, 1281));
+    const imagePosition = image.getBoundingClientRect();
 
     contents.forEach(function (obj, i) {
         const tips = document.createElement("div");
         tips.className = "tips";
-        tips.textContent = obj.alt;
-        // document.body.appendChild(tips);
+        tips.textContent = "  ";
+        document.body.appendChild(tips);
         // console.log(obj.y * toPercent(image.height, 1281), obj.x * toPercent(image.width, 1281))
-        tips.style.top = obj.y * toPercent(image.height, 1279) + 'px';
-        tips.style.left = obj.x * toPercent(image.width, 1281) + 'px';
+        tips.style.width = imageScaleX * 15 +'px';
+        tips.style.height = imageScaleY * 15 +'px';
+        tips.style.left = obj.x * imageScaleX  - imagePosition.left+ 'px';
+        tips.style.top = obj.y * imageScaleY - imagePosition.top + 'px';
+
     });
 
     function setTooltipsPosition(e) {
-        const imagePosition = image.getBoundingClientRect();
-        const imageScaleX = toPercent(image.width, 1281);
-        const imageScaleY =  toPercent(image.height, 1279);
 
-        const scale = 45 *  toPercent(image.width, 1281);
-
-        const tool = document.querySelector(".tooltip");
+        const scale = 50 *  imageScaleX;
+        const tool = document.querySelectorAll(".tooltip");
+        console.log(tool);
         if(null != tool){
-            tool.remove();
+            tool.forEach(el => el.remove());
         }
         contents.forEach(function (obj, i) {
             const tooltips = document.createElement("div");
@@ -181,8 +181,8 @@
             if ((rX <= scale && rX >= -scale) && (rY <= scale && rY >= -scale)) {
                 console.log("left",left, "top",top, "rX", rX, "rY", rY);
                 document.body.appendChild(tooltips);
-                tooltips.style.top = top + 'px';
                 tooltips.style.left = left + 'px';
+                tooltips.style.top = top + 'px';
             }
         });
     }
@@ -195,8 +195,7 @@
 
 
     image.addEventListener("click", setTooltipsPosition);
-    // image.addEventListener("mousemove", setTooltipsPosition);
-
+    image.addEventListener("mousemove", setTooltipsPosition);
     window.addEventListener("resize", function () {
         // 當螢幕大小改變時，重新計算 tooltips 的位置
         setTooltipsPosition();
